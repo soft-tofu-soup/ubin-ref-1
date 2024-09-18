@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map with Overlay and Base Layer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        .leaflet-control-layers {
+            z-index: 400; /* Ensure control layers are on top */
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([1.3521, 103.8198], 13); // Center on Singapore, adjust as needed
+
+        // Add base layer
+        var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add georeferenced image overlay
+        var georeferencedImage = L.imageOverlay('ubin_right_modified.png', [[1.25, 103.7], [1.4, 103.9]], {opacity: 0.6}).addTo(map);
+
+        // Add a control layer to toggle the image layer
+        var baseMaps = {
+            "Base Layer": baseLayer
+        };
+
+        var overlayMaps = {
+            "Georeferenced Image": georeferencedImage
+        };
+
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+    </script>
+</body>
+</html>
