@@ -20,25 +20,18 @@
         // Initialize the map
         var map = L.map('map').setView([1.3521, 103.8198], 13); // Center on Singapore, adjust as needed
 
-        // Add Mapbox Satellite base layer
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
+        // Add base layer
+        var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            id: 'mapbox/satellite-v9',
-            accessToken: 'pk.eyJ1Ijoic29mdC10b2Z1LXNvdXAiLCJhIjoiY20xODFrbzNyMG9mbjJqbXppcXVhdXpjbyJ9._N-HwMwU9YJrNk2WRGFNvw'
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
         // Add georeferenced image overlay
-        var georeferencedImage = L.imageOverlay('ubin_right_modified.png', [
-            [1.402556756, 103.976912742], // South-West corner
-            [1.415571076, 103.998111068]  // North-East corner
-        ], {
-            opacity: 0.6
-        }).addTo(map);
+        var georeferencedImage = L.imageOverlay('ubin_right_modified.png', [[1.402556756, 103.976912742], [1.415571076, 103.998111068]], {opacity: 0.6}).addTo(map);
 
         // Add a control layer to toggle the image layer
         var baseMaps = {
-            "Satellite View": baseLayer
+            "Base Layer": baseLayer
         };
 
         var overlayMaps = {
@@ -46,6 +39,11 @@
         };
 
         L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        // Add clickable pin
+        var marker = L.marker([1.41153, 103.97974]).addTo(map);
+        marker.bindPopup("<b>This is Syazwan's grandparents' home.</b><br>Originally, zinc was used for the walls, which now obscures the perimeter of the expansion. There are five steps between the kitchen and the well. The property was half the size of a soccer field and had a sirih plantation. Behind the kitchen, they grew lemongrass, pandan, sugarcane, and papaya. Food waste was used as fertiliser, and the water used for washing plates was connected via a hose to water the plants.").openPopup();
+
     </script>
 </body>
 </html>
