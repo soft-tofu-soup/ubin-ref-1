@@ -11,14 +11,28 @@
         .leaflet-control-layers {
             z-index: 400; /* Ensure control layers are on top */
         }
+        #opacity-control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            z-index: 500; /* Ensure it's above all other controls */
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <div id="opacity-control">
+        <label for="opacity-slider">Opacity:</label>
+        <input type="range" id="opacity-slider" min="0" max="1" step="0.01" value="0.6">
+    </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Initialize the map
-        var map = L.map('map').setView([1.3521, 103.8198], 13); // Center on Singapore
+        var map = L.map('map').setView([1.3521, 103.8198], 13); // Center on Singapore, adjust as needed
 
         // Add base layer
         var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -27,7 +41,7 @@
         }).addTo(map);
 
         // Add georeferenced image overlay
-        var georeferencedImage = L.imageOverlay('ubin_right_modified.png', [[1.402556756, 103.976912742], [1.415571076, 103.998111068]], {opacity: 0.6});
+        var georeferencedImage = L.imageOverlay('ubin_right_modified.png', [[1.402556756, 103.976912742], [1.415571076, 103.998111068]], {opacity: 0.6}).addTo(map);
 
         // Add a control layer to toggle the image layer
         var baseMaps = {
@@ -42,10 +56,14 @@
 
         // Add clickable pin
         var marker = L.marker([1.41153, 103.97974]).addTo(map);
-        marker.bindPopup("<b>This is Syazwan's grandparents' home.</b><br>Originally, zinc was used for the walls, which now obscures the perimeter of the expansion. There are five steps between the kitchen and the well. The property was half the size of a soccer field and had a sirih plantation. Behind the kitchen, they grew lemongrass, pandan, sugarcane, and papaya. Food waste was used as fertiliser, and the water used for washing plates was connected via a hose to water the plants.").openPopup();
+        marker.bindPopup("<b>This was Syazwan's grandparents' home.</b><br>Originally, zinc was used for the walls, which now obscures the perimeter of the expansion. There are five steps between the kitchen and the well. The property was half the size of a soccer field and had a sirih plantation. Behind the kitchen, they grew lemongrass, pandan, sugarcane, and papaya. Food waste was used as fertiliser, and the water used for washing plates was connected via a hose to water the plants.").openPopup();
 
-        // Add the georeferenced image layer to the map
-        georeferencedImage.addTo(map);
+        // Add opacity control slider functionality
+        var opacitySlider = document.getElementById('opacity-slider');
+        opacitySlider.addEventListener('input', function() {
+            var opacityValue = opacitySlider.value;
+            georeferencedImage.setOpacity(opacityValue);
+        });
     </script>
 </body>
 </html>
